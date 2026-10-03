@@ -5,164 +5,187 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self';">
+    content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https:; connect-src 'self';">
   <title>Vellura</title>
   <link rel="stylesheet" href="./css/vellura.css">
 </head>
 
-<body>
+<body data-theme="midnight">
+  <svg class="icon-sprite" aria-hidden="true">
+    <symbol id="icon-arrow-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></symbol>
+    <symbol id="icon-arrow-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></symbol>
+    <symbol id="icon-reload" viewBox="0 0 24 24"><path d="M20 11a8.1 8.1 0 0 0-15.5-3M4 4v4h4M4 13a8.1 8.1 0 0 0 15.5 3M20 20v-4h-4" /></symbol>
+    <symbol id="icon-stop" viewBox="0 0 24 24"><path d="M7 7h10v10H7z" /></symbol>
+    <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></symbol>
+    <symbol id="icon-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" /></symbol>
+    <symbol id="icon-minus" viewBox="0 0 24 24"><path d="M5 12h14" /></symbol>
+    <symbol id="icon-maximize" viewBox="0 0 24 24"><path d="M6 6h12v12H6z" /></symbol>
+    <symbol id="icon-restore" viewBox="0 0 24 24"><path d="M8 8h10v10H8zM6 16V6h10" /></symbol>
+    <symbol id="icon-menu" viewBox="0 0 24 24"><path d="M5 7h14M5 12h14M5 17h14" /></symbol>
+    <symbol id="icon-star" viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z" /></symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.6 2.9 8 7 10 4.1-2 7-5.4 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-4" /></symbol>
+    <symbol id="icon-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="3" /><path d="M8 10V8a4 4 0 0 1 8 0v2" /></symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6" /><path d="m16 16 4 4" /></symbol>
+    <symbol id="icon-download" viewBox="0 0 24 24"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 20h14" /></symbol>
+    <symbol id="icon-history" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7L4 8.5M4 4v4.5h4.5M12 8v5l3 2" /></symbol>
+    <symbol id="icon-bookmark" viewBox="0 0 24 24"><path d="M7 4h10v17l-5-3-5 3V4Z" /></symbol>
+    <symbol id="icon-extension" viewBox="0 0 24 24"><path d="M9 4h6v4h4v6h-4v6H9v-4H5v-6h4V4Z" /></symbol>
+    <symbol id="icon-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19 13.5v-3l-2-.7-.7-1.7.9-2-2.2-2.2-2 .9-1.7-.7-.7-2h-3l-.7 2-1.7.7-2-.9L1 6.1l.9 2-.7 1.7-2 .7v3l2 .7.7 1.7-.9 2L3.2 20l2-.9 1.7.7.7 2h3l.7-2 1.7-.7 2 .9 2.2-2.2-.9-2 .7-1.7 2-.6Z" transform="scale(.82) translate(2.6 2.6)" /></symbol>
+    <symbol id="icon-print" viewBox="0 0 24 24"><path d="M7 8V4h10v4M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 14h10v7H7z" /></symbol>
+    <symbol id="icon-code" viewBox="0 0 24 24"><path d="m8 9-3 3 3 3M16 9l3 3-3 3M14 5l-4 14" /></symbol>
+    <symbol id="icon-expand" viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5" /></symbol>
+    <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 3h6l1 4H8l1-4ZM7 7l1 14h8l1-14" /></symbol>
+    <symbol id="icon-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M9.8 9a2.4 2.4 0 1 1 3.5 2.1c-.9.5-1.3 1-1.3 1.9M12 17h.01" /></symbol>
+    <symbol id="icon-log-out" viewBox="0 0 24 24"><path d="M10 5H5v14h5M14 8l4 4-4 4M18 12H9" /></symbol>
+    <symbol id="icon-volume" viewBox="0 0 24 24"><path d="M5 10v4h4l5 4V6L9 10H5ZM17 9a4 4 0 0 1 0 6" /></symbol>
+    <symbol id="icon-volume-off" viewBox="0 0 24 24"><path d="M5 10v4h4l5 4V6L9 10H5Z" /><path d="m17 10 4 4m0-4-4 4" /></symbol>
+    <symbol id="icon-pin" viewBox="0 0 24 24"><path d="m9 3 6 6-2 2 4 4-2 2-4-4-2 2-6-6 2-2 2 2 4-4-2-2Z" /><path d="m8 16-5 5" /></symbol>
+    <symbol id="icon-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="2" /><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" /></symbol>
+    <symbol id="icon-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></symbol>
+    <symbol id="icon-sparkles" viewBox="0 0 24 24"><path d="m12 3 1.3 4.2L17 9l-3.7 1.8L12 15l-1.3-4.2L7 9l3.7-1.8L12 3ZM5 14l.8 2.2L8 17l-2.2.8L5 20l-.8-2.2L2 17l2.2-.8L5 14ZM19 13l.8 2.2L22 16l-2.2.8L19 19l-.8-2.2L16 16l2.2-.8L19 13Z" /></symbol>
+  </svg>
+
   <div class="app-shell">
     <header class="titlebar">
-      <div class="titlebar-brand" title="Vellura">
+      <div class="titlebar-brand" title="Vellura — Browse beyond">
         <img src="../assets/vellura-logo.png" alt="" class="brand-logo">
-        <span class="brand-name">Vellura</span>
+        <div class="brand-copy"><span class="brand-name">Vellura</span><span class="brand-channel">Browser</span></div>
         <span id="privateBadge" class="private-badge hidden">Private</span>
       </div>
-
       <div class="tabs-area">
-        <div id="tabList" class="tab-list"></div>
-        <button id="newTabButton" class="new-tab" type="button" title="New tab">+</button>
+        <div id="tabList" class="tab-list" role="tablist" aria-label="Open tabs"></div>
+        <button id="newTabButton" class="new-tab icon-button" type="button" title="New tab (Ctrl+T)"><svg><use href="#icon-plus"></use></svg></button>
       </div>
-
       <div class="window-controls">
-        <button id="minimizeButton" class="window-button" title="Minimize">−</button>
-        <button id="maximizeButton" class="window-button" title="Maximize">□</button>
-        <button id="closeButton" class="window-button close" title="Close">×</button>
+        <button id="minimizeButton" class="window-button" type="button" title="Minimize"><svg><use href="#icon-minus"></use></svg></button>
+        <button id="maximizeButton" class="window-button" type="button" title="Maximize"><svg id="maximizeIcon"><use href="#icon-maximize"></use></svg></button>
+        <button id="closeButton" class="window-button close" type="button" title="Close"><svg><use href="#icon-x"></use></svg></button>
       </div>
     </header>
 
     <section class="navigationbar">
       <div class="navgroup">
-        <button id="backButton" class="nav-button" title="Back" disabled>‹</button>
-        <button id="forwardButton" class="nav-button" title="Forward" disabled>›</button>
-        <button id="reloadButton" class="nav-button" title="Reload"><span id="reloadIcon">↻</span></button>
+        <button id="backButton" class="nav-button icon-button" type="button" title="Back (Alt+Left)" disabled><svg><use href="#icon-arrow-left"></use></svg></button>
+        <button id="forwardButton" class="nav-button icon-button" type="button" title="Forward (Alt+Right)" disabled><svg><use href="#icon-arrow-right"></use></svg></button>
+        <button id="reloadButton" class="nav-button icon-button" type="button" title="Reload"><svg id="reloadIcon"><use href="#icon-reload"></use></svg></button>
       </div>
-
       <form id="addressForm" class="address-form">
         <div class="address-box">
-          <span id="securityIcon" class="security-icon">⌁</span>
-          <input id="addressBar" type="text" autocomplete="off" spellcheck="false"
-            placeholder="Search Google or type a URL" aria-label="Search Google or type a URL">
-          <button id="bookmarkButton" class="address-action" type="button" title="Bookmark this page">☆</button>
+          <button id="siteInfoButton" class="site-info-button" type="button" title="View site information" aria-expanded="false"><svg id="securityIcon"><use href="#icon-lock"></use></svg></button>
+          <input id="addressBar" type="text" autocomplete="off" spellcheck="false" placeholder="Search the web or enter an address" aria-label="Search the web or enter an address">
+          <span class="address-hint" aria-hidden="true">Ctrl L</span>
+          <button id="commandButton" class="address-action icon-button" type="button" title="Open command center (Ctrl+K)"><svg><use href="#icon-sparkles"></use></svg></button>
+          <button id="bookmarkButton" class="address-action icon-button" type="button" title="Bookmark this page"><svg><use href="#icon-star"></use></svg></button>
         </div>
       </form>
-
       <div class="navgroup right">
-        <button id="profileButton" class="profile-button" title="Profile"><span id="profileInitial">D</span></button>
-        <button id="menuButton" class="menu-button" title="Vellura menu" aria-expanded="false">☰</button>
+        <button id="shieldButton" class="toolbar-action icon-button" type="button" title="Privacy protection"><svg><use href="#icon-shield"></use></svg><span class="status-dot"></span></button>
+        <button id="downloadsButton" class="toolbar-action icon-button" type="button" title="Downloads (Ctrl+J)"><svg><use href="#icon-download"></use></svg></button>
+        <button id="profileButton" class="profile-button" type="button" title="Profile"><span id="profileInitial">D</span></button>
+        <button id="menuButton" class="menu-button icon-button" type="button" title="Vellura menu" aria-expanded="false"><svg><use href="#icon-menu"></use></svg></button>
       </div>
     </section>
   </div>
 
-  <!-- Menu -->
-  <aside id="menuPanel" class="menu-panel hidden">
-    <div class="menu-head">
-      <img src="../assets/vellura-logo.png" alt="" class="menu-logo">
-      <div class="menu-brandtext">
-        <strong>Vellura</strong>
-        <span id="menuSubtitle">Browse beyond.</span>
-      </div>
-      <span class="menu-version">0.4.0</span>
+  <aside id="siteInfoPanel" class="site-info-panel popover hidden">
+    <div class="site-info-hero">
+      <span class="site-info-icon"><svg><use href="#icon-shield"></use></svg></span>
+      <div><strong id="siteInfoTitle">Connection protected</strong><span id="siteInfoOrigin">Vellura internal page</span></div>
     </div>
-
-    <button class="menu-item" data-action="new-tab"><span class="item-icon">＋</span><span>New
-        Tab</span><kbd>Ctrl+T</kbd></button>
-    <button class="menu-item" data-action="new-window"><span class="item-icon">□</span><span>New
-        Window</span><kbd>Ctrl+N</kbd></button>
-    <button class="menu-item" data-action="private-window"><span class="item-icon">◉</span><span>New Private
-        Window</span><kbd>Ctrl+Shift+N</kbd></button>
-
-    <div class="menu-divider"></div>
-
-    <button class="menu-item" data-action="history"><span
-        class="item-icon">◷</span><span>History</span><kbd>Ctrl+H</kbd></button>
-    <button class="menu-item" data-action="downloads"><span
-        class="item-icon">↓</span><span>Downloads</span><kbd>Ctrl+J</kbd></button>
-    <button class="menu-item" data-action="bookmarks"><span
-        class="item-icon">☆</span><span>Bookmarks</span><kbd>Ctrl+Shift+B</kbd></button>
-    <button class="menu-item" data-action="extensions"><span
-        class="item-icon">✚</span><span>Extensions</span><span>›</span></button>
-
-    <div class="menu-divider"></div>
-
-    <div class="zoom-row">
-      <span class="zoom-label">Zoom</span>
-      <button id="zoomOutButton" type="button">−</button>
-      <button id="zoomResetButton" type="button" class="zoom-value">100%</button>
-      <button id="zoomInButton" type="button">+</button>
-    </div>
-
-    <button class="menu-item" data-action="save-page"><span class="item-icon">▣</span><span>Save Page
-        As…</span></button>
-    <button class="menu-item" data-action="print"><span
-        class="item-icon">⎙</span><span>Print…</span><kbd>Ctrl+P</kbd></button>
-    <button class="menu-item" data-action="find"><span
-        class="item-icon">⌕</span><span>Find…</span><kbd>Ctrl+F</kbd></button>
-    <button class="menu-item" data-action="cast"><span class="item-icon">◫</span><span>Cast…</span></button>
-    <button class="menu-item" data-action="devtools"><span class="item-icon">⌘</span><span>Developer
-        Tools</span><kbd>Ctrl+Shift+I</kbd></button>
-
-    <div class="menu-divider"></div>
-
-    <button class="menu-item" data-action="fullscreen"><span class="item-icon">⛶</span><span>Full
-        Screen</span><kbd>F11</kbd></button>
-    <button class="menu-item" data-action="clear-data"><span class="item-icon">⌫</span><span>Clear Browsing
-        Data</span></button>
-    <button class="menu-item" data-action="settings"><span
-        class="item-icon">⚙</span><span>Settings</span><span>›</span></button>
-    <button class="menu-item" data-action="help"><span class="item-icon">?</span><span>Help &amp;
-        Support</span><span>›</span></button>
-
-    <div class="menu-divider"></div>
-    <button class="menu-item" data-action="exit"><span
-        class="item-icon">⇲</span><span>Exit</span><kbd>Alt+F4</kbd></button>
+    <div class="site-info-row"><span>Connection</span><strong id="connectionStatus">Secure</strong></div>
+    <div class="site-info-row"><span>Renderer</span><strong>Sandboxed</strong></div>
+    <button class="popover-action" type="button" data-site-action="settings">Privacy &amp; security settings <svg><use href="#icon-chevron-right"></use></svg></button>
   </aside>
 
-  <!-- Profile -->
-  <aside id="profilePanel" class="profile-panel hidden">
+  <aside id="menuPanel" class="menu-panel popover hidden">
+    <div class="menu-head">
+      <img src="../assets/vellura-logo.png" alt="" class="menu-logo">
+      <div class="menu-brandtext"><strong>Vellura</strong><span id="menuSubtitle">Browse beyond.</span></div>
+      <span class="menu-version">1.0</span>
+    </div>
+    <div class="menu-section">
+      <button class="menu-item" data-action="new-tab"><svg><use href="#icon-plus"></use></svg><span>New tab</span><kbd>Ctrl T</kbd></button>
+      <button class="menu-item" data-action="new-window"><svg><use href="#icon-maximize"></use></svg><span>New window</span><kbd>Ctrl N</kbd></button>
+      <button class="menu-item" data-action="private-window"><svg><use href="#icon-shield"></use></svg><span>New private window</span><kbd>Ctrl Shift N</kbd></button>
+    </div>
+    <div class="menu-divider"></div>
+    <div class="menu-section">
+      <button class="menu-item" data-action="history"><svg><use href="#icon-history"></use></svg><span>History</span><kbd>Ctrl H</kbd></button>
+      <button class="menu-item" data-action="downloads"><svg><use href="#icon-download"></use></svg><span>Downloads</span><kbd>Ctrl J</kbd></button>
+      <button class="menu-item" data-action="bookmarks"><svg><use href="#icon-bookmark"></use></svg><span>Bookmarks</span><kbd>Ctrl Shift B</kbd></button>
+      <button class="menu-item" data-action="extensions"><svg><use href="#icon-extension"></use></svg><span>Extensions</span><svg class="chevron"><use href="#icon-chevron-right"></use></svg></button>
+    </div>
+    <div class="menu-divider"></div>
+    <div class="zoom-row"><span>Page zoom</span><div><button id="zoomOutButton" type="button" aria-label="Zoom out">−</button><button id="zoomResetButton" type="button" class="zoom-value">100%</button><button id="zoomInButton" type="button" aria-label="Zoom in">+</button></div></div>
+    <div class="menu-section">
+      <button class="menu-item" data-action="save-page"><svg><use href="#icon-download"></use></svg><span>Save page as…</span></button>
+      <button class="menu-item" data-action="print"><svg><use href="#icon-print"></use></svg><span>Print</span><kbd>Ctrl P</kbd></button>
+      <button class="menu-item" data-action="find"><svg><use href="#icon-search"></use></svg><span>Find in page</span><kbd>Ctrl F</kbd></button>
+      <button class="menu-item" data-action="devtools"><svg><use href="#icon-code"></use></svg><span>Developer tools</span><kbd>Ctrl Shift I</kbd></button>
+    </div>
+    <div class="menu-divider"></div>
+    <div class="menu-section">
+      <button class="menu-item" data-action="fullscreen"><svg><use href="#icon-expand"></use></svg><span>Full screen</span><kbd>F11</kbd></button>
+      <button class="menu-item" data-action="clear-data"><svg><use href="#icon-trash"></use></svg><span>Clear browsing data</span></button>
+      <button class="menu-item" data-action="settings"><svg><use href="#icon-settings"></use></svg><span>Settings</span><svg class="chevron"><use href="#icon-chevron-right"></use></svg></button>
+      <button class="menu-item" data-action="help"><svg><use href="#icon-help"></use></svg><span>Help &amp; shortcuts</span><svg class="chevron"><use href="#icon-chevron-right"></use></svg></button>
+    </div>
+    <div class="menu-divider"></div>
+    <button class="menu-item danger-item" data-action="exit"><svg><use href="#icon-log-out"></use></svg><span>Exit Vellura</span><kbd>Alt F4</kbd></button>
+  </aside>
+
+  <aside id="profilePanel" class="profile-panel popover hidden">
     <div class="profile-head">
-      <button id="profileClose" class="round-close">×</button>
+      <button id="profileClose" class="round-close icon-button" type="button" aria-label="Close"><svg><use href="#icon-x"></use></svg></button>
       <div class="profile-avatar large" id="profileAvatarLarge">D</div>
       <strong id="profileNameLarge">Default</strong>
       <span id="profileStatus">Your Vellura profile</span>
     </div>
-
     <div class="profile-list" id="profileList"></div>
-
-    <div class="profile-create">
-      <input id="newProfileName" type="text" maxlength="40" placeholder="New profile name">
-      <button id="createProfileButton" type="button">Create</button>
-    </div>
+    <div class="profile-create"><input id="newProfileName" type="text" maxlength="40" placeholder="Create a profile"><button id="createProfileButton" type="button">Add</button></div>
   </aside>
 
-  <!-- Panels -->
+  <section id="findBar" class="find-bar hidden">
+    <svg><use href="#icon-search"></use></svg>
+    <input id="findInput" type="text" placeholder="Find in this page" autocomplete="off">
+    <span class="find-hint">Enter to find next</span>
+    <button id="findClose" class="icon-button" type="button" aria-label="Close find"><svg><use href="#icon-x"></use></svg></button>
+  </section>
+
+  <section id="commandPalette" class="command-backdrop hidden" aria-modal="true" role="dialog" aria-label="Command center">
+    <div class="command-palette">
+      <div class="command-search"><svg><use href="#icon-search"></use></svg><input id="commandInput" type="text" placeholder="Search commands and Vellura features" autocomplete="off"><kbd>Esc</kbd></div>
+      <div class="command-label">Quick actions</div>
+      <div id="commandList" class="command-list"></div>
+      <div class="command-footer"><span><kbd>↑</kbd><kbd>↓</kbd> Navigate</span><span><kbd>Enter</kbd> Run</span><span>Vellura Command Center</span></div>
+    </div>
+  </section>
+
+  <section id="tabContextMenu" class="tab-context-menu popover hidden">
+    <button data-tab-action="duplicate"><svg><use href="#icon-copy"></use></svg><span>Duplicate tab</span></button>
+    <button data-tab-action="pin"><svg><use href="#icon-pin"></use></svg><span id="pinTabLabel">Pin tab</span></button>
+    <button data-tab-action="mute"><svg><use href="#icon-volume"></use></svg><span id="muteTabLabel">Mute site</span></button>
+    <div class="menu-divider"></div>
+    <button data-tab-action="close-right"><svg><use href="#icon-x"></use></svg><span>Close tabs to the right</span></button>
+    <button data-tab-action="close-others"><svg><use href="#icon-x"></use></svg><span>Close other tabs</span></button>
+  </section>
+
   <section id="panel" class="data-panel hidden">
     <header class="panel-header">
-      <div>
-        <div id="panelTitle" class="panel-title">Vellura</div>
-        <div id="panelSubtitle" class="panel-subtitle">Browser data</div>
-      </div>
-      <button id="panelClose" class="round-close">×</button>
+      <div class="panel-heading"><span id="panelIcon" class="panel-icon"><svg><use href="#icon-sparkles"></use></svg></span><div><div id="panelTitle" class="panel-title">Vellura</div><div id="panelSubtitle" class="panel-subtitle">Browser data</div></div></div>
+      <button id="panelClose" class="round-close icon-button" type="button" aria-label="Close panel"><svg><use href="#icon-x"></use></svg></button>
     </header>
     <div id="panelToolbar" class="panel-toolbar hidden"></div>
     <div id="panelBody" class="panel-body"></div>
   </section>
 
-  <!-- Permission -->
   <section id="permissionDialog" class="permission-dialog hidden">
-    <div class="permission-icon">!</div>
-    <div class="permission-text">
-      <strong id="permissionTitle">Site permission request</strong>
-      <span id="permissionMessage"></span>
-    </div>
-    <div class="permission-actions">
-      <button id="permissionBlock" type="button">Block</button>
-      <button id="permissionAllow" type="button">Allow</button>
-    </div>
+    <div class="permission-icon"><svg><use href="#icon-shield"></use></svg></div>
+    <div class="permission-text"><strong id="permissionTitle">Site permission request</strong><span id="permissionMessage"></span></div>
+    <div class="permission-actions"><button id="permissionBlock" type="button">Block</button><button id="permissionAllow" type="button">Allow once</button></div>
   </section>
 
-  <div id="toast" class="toast hidden"></div>
-
+  <div id="toast" class="toast hidden" role="status"></div>
   <script src="./js/vellura.js"></script>
 </body>
 

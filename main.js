@@ -239,6 +239,9 @@ function createProfileStore(
       theme:
         "midnight",
 
+      compactTabs:
+        false,
+
       ...(
         readJSON(
           path.join(
@@ -599,6 +602,15 @@ function sendTabs(state) {
 
         loading:
           !!tab.loading,
+
+        pinned:
+          !!tab.pinned,
+
+        muted:
+          !!tab.muted,
+
+        audible:
+          !!tab.audible,
 
         active:
           tab.id ===
@@ -1781,6 +1793,28 @@ function registerShortcuts(
       }
 
       /*
+       * Ctrl + K
+       */
+      if (
+        ctrl &&
+        lower === "k"
+      ) {
+        event.preventDefault();
+
+        keepUIOnTop(
+          state
+        );
+
+        state.uiView?.webContents.focus();
+
+        state.uiView?.webContents.send(
+          "command-palette:open"
+        );
+
+        return;
+      }
+
+      /*
        * Ctrl + T
        */
       if (
@@ -2368,7 +2402,16 @@ function createTab(
       "",
 
     loading:
-      true
+      true,
+
+    pinned:
+      false,
+
+    muted:
+      false,
+
+    audible:
+      false
   };
 
   state.tabs.set(
@@ -2557,6 +2600,22 @@ function createTab(
   );
 
   view.webContents.on(
+    "media-started-playing",
+    () => {
+      tab.audible = true;
+      sendTabs(state);
+    }
+  );
+
+  view.webContents.on(
+    "media-paused",
+    () => {
+      tab.audible = false;
+      sendTabs(state);
+    }
+  );
+
+  view.webContents.on(
     "did-fail-load",
     (
       _event,
@@ -2700,6 +2759,14 @@ function closeTab(
   state,
   tabId
 ) {
+  const originalIds =
+    [...state.tabs.keys()];
+
+  const originalIndex =
+    originalIds.indexOf(
+      tabId
+    );
+
   const tab =
     state.tabs.get(
       tabId
@@ -2778,15 +2845,10 @@ function closeTab(
       Math.min(
         Math.max(
           0,
-          ids.length - 1
+          originalIndex
         ),
 
-        Math.max(
-          0,
-          ids.indexOf(
-            tabId
-          )
-        )
+        ids.length - 1
       );
 
     activateTab(
@@ -2837,6 +2899,168 @@ function reopenClosedTab(
     closed.url,
     true
   );
+}
+
+function reorderTab(
+  state,
+  tabId,
+  beforeId = null
+) {
+  if (
+    !state.tabs.has(tabId) ||
+    tabId === beforeId
+  ) {
+    return;
+  }
+
+  const moving =
+    state.tabs.get(tabId);
+
+  const ordered =
+    [...state.tabs.entries()]
+      .filter(([id]) => id !== tabId);
+
+  const target =
+    beforeId
+      ? state.tabs.get(beforeId)
+      : null;
+
+  if (
+    target &&
+    target.pinned !== moving.pinned
+  ) {
+    return;
+  }
+
+  let index =
+    beforeId
+      ? ordered.findIndex(([id]) => id === beforeId)
+      : ordered.length;
+
+  if (index < 0) {
+    index = ordered.length;
+  }
+
+  ordered.splice(
+    index,
+    0,
+    [tabId, moving]
+  );
+
+  state.tabs =
+    new Map(ordered);
+
+  sendTabs(state);
+}
+
+function pinTab(
+  state,
+  tabId,
+  pinned
+) {
+  const tab =
+    state.tabs.get(tabId);
+
+  if (!tab) {
+    return;
+  }
+
+  tab.pinned =
+    typeof pinned === "boolean"
+      ? pinned
+      : !tab.pinned;
+
+  const ordered =
+    [...state.tabs.entries()]
+      .sort(([, left], [, right]) =>
+        Number(right.pinned) -
+        Number(left.pinned)
+      );
+
+  state.tabs =
+    new Map(ordered);
+
+  sendTabs(state);
+}
+
+function duplicateTab(
+  state,
+  tabId
+) {
+  const tab =
+    state.tabs.get(tabId);
+
+  if (!tab) {
+    return;
+  }
+
+  createTab(
+    state,
+    tab.url || START_PAGE,
+    true
+  );
+}
+
+function toggleTabMute(
+  state,
+  tabId
+) {
+  const tab =
+    state.tabs.get(tabId);
+
+  if (!tab) {
+    return;
+  }
+
+  tab.muted =
+    !tab.muted;
+
+  tab.view.webContents
+    .setAudioMuted(tab.muted);
+
+  sendTabs(state);
+}
+
+function closeOtherTabs(
+  state,
+  tabId
+) {
+  for (
+    const id of
+    [...state.tabs.keys()]
+  ) {
+    const tab =
+      state.tabs.get(id);
+
+    if (
+      id !== tabId &&
+      !tab?.pinned
+    ) {
+      closeTab(state, id);
+    }
+  }
+}
+
+function closeTabsToRight(
+  state,
+  tabId
+) {
+  const ids =
+    [...state.tabs.keys()];
+
+  const index =
+    ids.indexOf(tabId);
+
+  if (index < 0) {
+    return;
+  }
+
+  for (
+    const id of
+    ids.slice(index + 1)
+  ) {
+    closeTab(state, id);
+  }
 }
 
 function activateNextTab(
@@ -2949,10 +3173,22 @@ function reloadTab(
 function reloadActiveTab(
   state
 ) {
-  reloadTab(
-    state,
-    activeTab(state)
-  );
+  const tab =
+    activeTab(state);
+
+  if (!tab) {
+    return;
+  }
+
+  if (tab.loading) {
+    tab.view.webContents
+      .stop();
+  } else {
+    reloadTab(
+      state,
+      tab
+    );
+  }
 }
 
 function changeZoom(
@@ -3471,7 +3707,10 @@ function createBrowserWindow(
                 START_PAGE,
 
               theme:
-                "midnight"
+                "midnight",
+
+              compactTabs:
+                false
             }
           }
         : createProfileStore(
@@ -4111,6 +4350,73 @@ ipcMain.on(
         state
       );
     }
+  }
+);
+
+/*
+ * Tab actions from the custom tab strip.
+ */
+ipcMain.on(
+  "tabs:action",
+  (
+    event,
+    payload
+  ) => {
+    const state =
+      trustedUI(event);
+
+    if (
+      !state ||
+      !payload ||
+      typeof payload !== "object"
+    ) {
+      return;
+    }
+
+    const {
+      action,
+      id
+    } = payload;
+
+    if (action === "pin") {
+      pinTab(state, id);
+    } else if (action === "duplicate") {
+      duplicateTab(state, id);
+    } else if (action === "mute") {
+      toggleTabMute(state, id);
+    } else if (action === "close-others") {
+      closeOtherTabs(state, id);
+    } else if (action === "close-right") {
+      closeTabsToRight(state, id);
+    }
+  }
+);
+
+/*
+ * Reorder tabs after drag and drop.
+ */
+ipcMain.on(
+  "tabs:reorder",
+  (
+    event,
+    payload
+  ) => {
+    const state =
+      trustedUI(event);
+
+    if (
+      !state ||
+      !payload ||
+      typeof payload !== "object"
+    ) {
+      return;
+    }
+
+    reorderTab(
+      state,
+      payload.id,
+      payload.beforeId || null
+    );
   }
 );
 
@@ -4756,11 +5062,43 @@ ipcMain.on(
     if (
       typeof patch.theme ===
         "string" &&
-      patch.theme ===
-        "midnight"
+      [
+        "midnight",
+        "aurora",
+        "light"
+      ].includes(
+        patch.theme
+      )
     ) {
       state.store.settings.theme =
-        "midnight";
+        patch.theme;
+    }
+
+    if (
+      typeof patch.compactTabs ===
+        "boolean"
+    ) {
+      state.store.settings.compactTabs =
+        patch.compactTabs;
+    }
+
+    if (
+      typeof patch.startupPage ===
+        "string"
+    ) {
+      const startupPage =
+        normalizeURL(
+          patch.startupPage,
+          state.store
+        );
+
+      if (
+        isInternalURL(startupPage) ||
+        /^https?:\/\//i.test(startupPage)
+      ) {
+        state.store.settings.startupPage =
+          startupPage;
+      }
     }
 
     persistProfileStore(
