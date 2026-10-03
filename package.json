@@ -1,0 +1,57 @@
+{
+  "name": "vellura",
+  "productName": "Vellura",
+  "version": "0.4.2",
+  "description": "Vellura \u2014 real Chromium browser shell with tabs, profiles, extensions, browsing data, downloads, menus and independent webpage zoom.",
+  "main": "main.js",
+  "author": "Vellura",
+  "license": "MIT",
+  "scripts": {
+    "start": "node scripts/start.js",
+    "dev": "nodemon --watch main.js --watch preload.js --watch src --watch assets --watch build --ext js,html,css,png,json --exec electron .",
+    "check": "node scripts/check.js",
+    "dist": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "latest",
+    "electron-builder": "latest",
+    "nodemon": "latest"
+  },
+  "build": {
+    "appId": "com.vellura.browser",
+    "productName": "Vellura",
+    "artifactName": "Vellura-Setup-${version}.${ext}",
+    "asar": true,
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*",
+      "assets/**/*",
+      "scripts/start.js",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "build"
+    },
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Vellura",
+      "uninstallDisplayName": "Vellura",
+      "artifactName": "Vellura-Setup-${version}.${ext}"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self' https: vellura:; script-src 'self'; style-src 'self'; img-src 'self' data: vellura://assets https:;">
+  <title>Vellura</title>
+  <link rel="stylesheet" href="./newtab.css">
+</head>
+
+<body>
+  <div class="wave wave-one"></div>
+  <div class="wave wave-two"></div>
+
+  <header class="links">
+    <a href="https://www.google.com">About</a>
+    <a href="https://www.google.com">Web Store</a>
+  </header>
+
+  <main class="hero">
+    <img src="vellura://assets/vellura-logo.png" alt="Vellura" class="hero-logo">
+    <h1>Vellura</h1>
+    <p>Browse beyond.</p>
+
+    <form id="searchForm" class="search">
+      <span class="search-icon">⌕</span>
+      <input id="query" type="text" autocomplete="off" autofocus placeholder="Search Google or type a URL">
+      <span class="mic">⌁</span>
+      <span class="lens">◉</span>
+    </form>
+
+    <div class="quick-actions">
+      <button id="searchButton" type="submit" form="searchForm">Google Search</button>
+      <button id="luckyButton" type="button">I'm Feeling Lucky</button>
+    </div>
+
+    <div class="note">
+      <span class="dot-symbol">◆</span>
+      <span>A faster, safer, more private web.</span>
+    </div>
+    <a class="learn" href="https://www.google.com">Learn more</a>
+  </main>
+
+  <footer>
+    <div><span>Advertising</span><span>Business</span><span>How Search works</span></div>
+    <div><span>Privacy</span><span>Terms</span><span>Settings</span></div>
+    <div class="status"><span></span>Ready</div>
+  </footer>
+  <script src="./newtab.js"></script>
+</body>
+
+</html>

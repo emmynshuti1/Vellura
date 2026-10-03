@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self';">
+  <title>Vellura</title>
+  <link rel="stylesheet" href="./css/vellura.css">
+</head>
+
+<body>
+  <div class="app-shell">
+    <header class="titlebar">
+      <div class="titlebar-brand" title="Vellura">
+        <img src="../assets/vellura-logo.png" alt="" class="brand-logo">
+        <span class="brand-name">Vellura</span>
+        <span id="privateBadge" class="private-badge hidden">Private</span>
+      </div>
+
+      <div class="tabs-area">
+        <div id="tabList" class="tab-list"></div>
+        <button id="newTabButton" class="new-tab" type="button" title="New tab">+</button>
+      </div>
+
+      <div class="window-controls">
+        <button id="minimizeButton" class="window-button" title="Minimize">−</button>
+        <button id="maximizeButton" class="window-button" title="Maximize">□</button>
+        <button id="closeButton" class="window-button close" title="Close">×</button>
+      </div>
+    </header>
+
+    <section class="navigationbar">
+      <div class="navgroup">
+        <button id="backButton" class="nav-button" title="Back" disabled>‹</button>
+        <button id="forwardButton" class="nav-button" title="Forward" disabled>›</button>
+        <button id="reloadButton" class="nav-button" title="Reload"><span id="reloadIcon">↻</span></button>
+      </div>
+
+      <form id="addressForm" class="address-form">
+        <div class="address-box">
+          <span id="securityIcon" class="security-icon">⌁</span>
+          <input id="addressBar" type="text" autocomplete="off" spellcheck="false"
+            placeholder="Search Google or type a URL" aria-label="Search Google or type a URL">
+          <button id="bookmarkButton" class="address-action" type="button" title="Bookmark this page">☆</button>
+        </div>
+      </form>
+
+      <div class="navgroup right">
+        <button id="profileButton" class="profile-button" title="Profile"><span id="profileInitial">D</span></button>
+        <button id="menuButton" class="menu-button" title="Vellura menu" aria-expanded="false">☰</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- Menu -->
+  <aside id="menuPanel" class="menu-panel hidden">
+    <div class="menu-head">
+      <img src="../assets/vellura-logo.png" alt="" class="menu-logo">
+      <div class="menu-brandtext">
+        <strong>Vellura</strong>
+        <span id="menuSubtitle">Browse beyond.</span>
+      </div>
+      <span class="menu-version">0.4.0</span>
+    </div>
+
+    <button class="menu-item" data-action="new-tab"><span class="item-icon">＋</span><span>New
+        Tab</span><kbd>Ctrl+T</kbd></button>
+    <button class="menu-item" data-action="new-window"><span class="item-icon">□</span><span>New
+        Window</span><kbd>Ctrl+N</kbd></button>
+    <button class="menu-item" data-action="private-window"><span class="item-icon">◉</span><span>New Private
+        Window</span><kbd>Ctrl+Shift+N</kbd></button>
+
+    <div class="menu-divider"></div>
+
+    <button class="menu-item" data-action="history"><span
+        class="item-icon">◷</span><span>History</span><kbd>Ctrl+H</kbd></button>
+    <button class="menu-item" data-action="downloads"><span
+        class="item-icon">↓</span><span>Downloads</span><kbd>Ctrl+J</kbd></button>
+    <button class="menu-item" data-action="bookmarks"><span
+        class="item-icon">☆</span><span>Bookmarks</span><kbd>Ctrl+Shift+B</kbd></button>
+    <button class="menu-item" data-action="extensions"><span
+        class="item-icon">✚</span><span>Extensions</span><span>›</span></button>
+
+    <div class="menu-divider"></div>
+
+    <div class="zoom-row">
+      <span class="zoom-label">Zoom</span>
+      <button id="zoomOutButton" type="button">−</button>
+      <button id="zoomResetButton" type="button" class="zoom-value">100%</button>
+      <button id="zoomInButton" type="button">+</button>
+    </div>
+
+    <button class="menu-item" data-action="save-page"><span class="item-icon">▣</span><span>Save Page
+        As…</span></button>
+    <button class="menu-item" data-action="print"><span
+        class="item-icon">⎙</span><span>Print…</span><kbd>Ctrl+P</kbd></button>
+    <button class="menu-item" data-action="find"><span
+        class="item-icon">⌕</span><span>Find…</span><kbd>Ctrl+F</kbd></button>
+    <button class="menu-item" data-action="cast"><span class="item-icon">◫</span><span>Cast…</span></button>
+    <button class="menu-item" data-action="devtools"><span class="item-icon">⌘</span><span>Developer
+        Tools</span><kbd>Ctrl+Shift+I</kbd></button>
+
+    <div class="menu-divider"></div>
+
+    <button class="menu-item" data-action="fullscreen"><span class="item-icon">⛶</span><span>Full
+        Screen</span><kbd>F11</kbd></button>
+    <button class="menu-item" data-action="clear-data"><span class="item-icon">⌫</span><span>Clear Browsing
+        Data</span></button>
+    <button class="menu-item" data-action="settings"><span
+        class="item-icon">⚙</span><span>Settings</span><span>›</span></button>
+    <button class="menu-item" data-action="help"><span class="item-icon">?</span><span>Help &amp;
+        Support</span><span>›</span></button>
+
+    <div class="menu-divider"></div>
+    <button class="menu-item" data-action="exit"><span
+        class="item-icon">⇲</span><span>Exit</span><kbd>Alt+F4</kbd></button>
+  </aside>
+
+  <!-- Profile -->
+  <aside id="profilePanel" class="profile-panel hidden">
+    <div class="profile-head">
+      <button id="profileClose" class="round-close">×</button>
+      <div class="profile-avatar large" id="profileAvatarLarge">D</div>
+      <strong id="profileNameLarge">Default</strong>
+      <span id="profileStatus">Your Vellura profile</span>
+    </div>
+
+    <div class="profile-list" id="profileList"></div>
+
+    <div class="profile-create">
+      <input id="newProfileName" type="text" maxlength="40" placeholder="New profile name">
+      <button id="createProfileButton" type="button">Create</button>
+    </div>
+  </aside>
+
+  <!-- Panels -->
+  <section id="panel" class="data-panel hidden">
+    <header class="panel-header">
+      <div>
+        <div id="panelTitle" class="panel-title">Vellura</div>
+        <div id="panelSubtitle" class="panel-subtitle">Browser data</div>
+      </div>
+      <button id="panelClose" class="round-close">×</button>
+    </header>
+    <div id="panelToolbar" class="panel-toolbar hidden"></div>
+    <div id="panelBody" class="panel-body"></div>
+  </section>
+
+  <!-- Permission -->
+  <section id="permissionDialog" class="permission-dialog hidden">
+    <div class="permission-icon">!</div>
+    <div class="permission-text">
+      <strong id="permissionTitle">Site permission request</strong>
+      <span id="permissionMessage"></span>
+    </div>
+    <div class="permission-actions">
+      <button id="permissionBlock" type="button">Block</button>
+      <button id="permissionAllow" type="button">Allow</button>
+    </div>
+  </section>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="./js/vellura.js"></script>
+</body>
+
+</html>
