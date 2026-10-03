@@ -24,6 +24,9 @@ contextBridge.exposeInMainWorld("vellura", {
   activateTab: (id) => ipcRenderer.send("tabs:activate", id),
   closeTab: (id) => ipcRenderer.send("tabs:close", id),
   reopenTab: () => ipcRenderer.send("tabs:reopen"),
+  tabAction: (action, id) => ipcRenderer.send("tabs:action", { action, id }),
+  reorderTab: (id, beforeId) =>
+    ipcRenderer.send("tabs:reorder", { id, beforeId }),
 
   minimizeWindow: () => ipcRenderer.send("window:minimize"),
   maximizeWindow: () => ipcRenderer.send("window:maximize"),
@@ -68,6 +71,7 @@ contextBridge.exposeInMainWorld("vellura", {
 
   onAddressFocus: (cb) => receive("address:focus", cb),
   onFindRequest: (cb) => receive("find:request", cb),
+  onCommandPalette: (cb) => receive("command-palette:open", cb),
   onClearDataConfirm: (cb) => receive("clear-data:confirm", cb),
 
   onPanelOpen: (cb) => receive("panel:open", cb),

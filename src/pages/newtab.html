@@ -6,48 +6,119 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy"
     content="default-src 'self' https: vellura:; script-src 'self'; style-src 'self'; img-src 'self' data: vellura://assets https:;">
-  <title>Vellura</title>
+  <title>New tab</title>
   <link rel="stylesheet" href="./newtab.css">
 </head>
 
-<body>
-  <div class="wave wave-one"></div>
-  <div class="wave wave-two"></div>
+<body data-wallpaper="midnight">
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <div class="noise"></div>
 
-  <header class="links">
-    <a href="https://www.google.com">About</a>
-    <a href="https://www.google.com">Web Store</a>
+  <header class="topbar">
+    <a class="wordmark" href="vellura://newtab/" aria-label="Vellura home">
+      <img src="vellura://assets/vellura-logo.png" alt="">
+      <span>Vellura</span>
+      <small>new tab</small>
+    </a>
+    <div class="top-actions">
+      <span class="privacy-status"><i></i> Sandboxed</span>
+      <button id="customizeButton" class="glass-button" type="button" aria-expanded="false">
+        <svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" /><circle cx="12" cy="12" r="4" /></svg>
+        Customize
+      </button>
+    </div>
   </header>
 
-  <main class="hero">
-    <img src="vellura://assets/vellura-logo.png" alt="Vellura" class="hero-logo">
-    <h1>Vellura</h1>
-    <p>Browse beyond.</p>
+  <main class="dashboard">
+    <section class="hero">
+      <div class="time-row">
+        <time id="clock">09:41</time>
+        <span id="period">AM</span>
+      </div>
+      <p id="date">Saturday, October 3</p>
+      <h1 id="greeting">Good morning.</h1>
+      <p class="tagline">Where would you like to go?</p>
 
-    <form id="searchForm" class="search">
-      <span class="search-icon">⌕</span>
-      <input id="query" type="text" autocomplete="off" autofocus placeholder="Search Google or type a URL">
-      <span class="mic">⌁</span>
-      <span class="lens">◉</span>
-    </form>
+      <form id="searchForm" class="search-card">
+        <span class="search-mark">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6" /><path d="m16 16 4 4" /></svg>
+        </span>
+        <input id="query" type="text" autocomplete="off" autofocus placeholder="Search the web or type a URL" aria-label="Search the web or type a URL">
+        <span class="search-shortcut">Ctrl L</span>
+        <button type="submit" aria-label="Search">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5" /></svg>
+        </button>
+      </form>
+    </section>
 
-    <div class="quick-actions">
-      <button id="searchButton" type="submit" form="searchForm">Google Search</button>
-      <button id="luckyButton" type="button">I'm Feeling Lucky</button>
-    </div>
+    <section class="shortcuts-section" aria-labelledby="shortcutsTitle">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">Launchpad</span>
+          <h2 id="shortcutsTitle">Your shortcuts</h2>
+        </div>
+        <button id="addShortcutButton" class="text-button" type="button">+ Add shortcut</button>
+      </div>
+      <div id="shortcutGrid" class="shortcut-grid"></div>
+    </section>
 
-    <div class="note">
-      <span class="dot-symbol">◆</span>
-      <span>A faster, safer, more private web.</span>
-    </div>
-    <a class="learn" href="https://www.google.com">Learn more</a>
+    <section class="browser-cards">
+      <article class="feature-card privacy-card">
+        <span class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.6 2.9 8 7 10 4.1-2 7-5.4 7-10V6l-7-3Z" /><path d="m9 12 2 2 4-4" /></svg>
+        </span>
+        <div><span class="eyebrow">Protection</span><h3>Secure by architecture</h3><p>Web pages run in sandboxed renderers with isolated Vellura controls.</p></div>
+        <span class="card-state">Active</span>
+      </article>
+      <article class="feature-card command-card">
+        <span class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 6h6M9 18h6M6 9v6M18 9v6" /><rect x="5" y="5" width="14" height="14" rx="5" /></svg>
+        </span>
+        <div><span class="eyebrow">Productivity</span><h3>Command Center</h3><p>Press Ctrl+K anywhere to search Vellura's actions instantly.</p></div>
+        <span class="keycap">Ctrl K</span>
+      </article>
+    </section>
   </main>
 
   <footer>
-    <div><span>Advertising</span><span>Business</span><span>How Search works</span></div>
-    <div><span>Privacy</span><span>Terms</span><span>Settings</span></div>
-    <div class="status"><span></span>Ready</div>
+    <span><i></i> Vellura is ready</span>
+    <div><span>Chromium engine</span><span>Profile isolated</span><span>Browse beyond.</span></div>
   </footer>
+
+  <aside id="customizePanel" class="customize-panel" aria-hidden="true">
+    <header>
+      <div><span class="eyebrow">Personalize</span><h2>Make it yours</h2></div>
+      <button id="closeCustomize" type="button" aria-label="Close">×</button>
+    </header>
+
+    <section>
+      <h3>Atmosphere</h3>
+      <p>Choose the color environment for your new tab.</p>
+      <div class="theme-options">
+        <button type="button" data-theme="midnight" class="theme-option midnight"><span></span>Midnight</button>
+        <button type="button" data-theme="aurora" class="theme-option aurora"><span></span>Aurora</button>
+        <button type="button" data-theme="ember" class="theme-option ember"><span></span>Ember</button>
+      </div>
+    </section>
+
+    <section>
+      <h3>Add shortcut</h3>
+      <p>Keep your most-used destinations one click away.</p>
+      <form id="shortcutForm">
+        <label>Name<input id="shortcutName" maxlength="24" placeholder="GitHub" required></label>
+        <label>Web address<input id="shortcutURL" placeholder="https://github.com" required></label>
+        <button type="submit">Add to launchpad</button>
+      </form>
+    </section>
+
+    <section>
+      <div class="manage-heading"><div><h3>Manage shortcuts</h3><p>Remove links you no longer need.</p></div></div>
+      <div id="shortcutManager" class="shortcut-manager"></div>
+    </section>
+  </aside>
+  <div id="panelScrim" class="panel-scrim"></div>
+
   <script src="./newtab.js"></script>
 </body>
 

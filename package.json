@@ -1,8 +1,8 @@
 {
   "name": "vellura",
   "productName": "Vellura",
-  "version": "0.4.2",
-  "description": "Vellura \u2014 real Chromium browser shell with tabs, profiles, extensions, browsing data, downloads, menus and independent webpage zoom.",
+  "version": "0.5.0",
+  "description": "Vellura \u2014 a modern Chromium browser with real tabs, profiles, private windows, extensions, downloads, and productivity tools.",
   "main": "main.js",
   "author": "Vellura",
   "license": "MIT",

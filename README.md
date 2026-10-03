@@ -1,90 +1,77 @@
-# Vellura 0.4.2 — Real Browser Feature Upgrade
+# Vellura 0.5
 
-Windows-first Electron + Chromium browser implementation.
+Vellura is a Windows-first desktop browser built with Electron and Chromium. It combines a real multi-tab browsing engine with custom, privacy-conscious browser chrome and profile-scoped data.
 
-## Main improvements
+## Highlights
 
-- Single Vellura V brand asset, using `assets/vellura-logo.png`
-- Windows ICO derived from the same V brand
-- Responsive custom browser chrome
-- New-tab `vellura://newtab/` page
-- Real Chromium tabs through WebContentsView
-- New-tab + button sits directly after the tab strip and before window controls
-- Tab switching, closing and reopen
-- Profile button and persistent browser profiles
-- New Window and New Private Window
-- History and bookmarks per profile
-- Download manager with open/folder/pause/resume/cancel actions
-- Unpacked Chromium extension manager
-- Real permission request prompts
-- Context menu on webpage content
-- Save page
-- Print
-- Find in page
-- Developer Tools
-- Full screen
-- Clear browsing data
-- Search engine settings
-- Zoom controls and keyboard shortcuts
-- Ctrl+= / Ctrl++ / Ctrl+- / Ctrl+0
-- Responsive layout at smaller window widths
-- Nodemon development mode
-- Quiet normal start
-- Windows NSIS packaging configuration with the Vellura icon
+- Real Chromium pages rendered in isolated `WebContentsView` tabs
+- Modern Vellura chrome with Midnight, Aurora, and Daylight themes
+- Pinned, draggable, duplicable, closable, and reopenable tabs
+- Tab audio status and per-tab mute controls
+- Searchable Command Center with `Ctrl+K`
+- Integrated address search, site information, find in page, print, save, zoom, and developer tools
+- Distinctive, customizable `vellura://newtab/` launchpad
+- Persistent profiles plus private browsing windows
+- Profile-scoped history, bookmarks, settings, downloads, and browsing storage
+- Download manager with open, reveal, pause, resume, and cancel actions
+- Unpacked Chromium extension management
+- Explicit website permission prompts and webpage context menus
+- Responsive browser chrome and keyboard-accessible controls
+- Windows NSIS installer configuration
 
-## Run
+## Run locally
+
+Use an active Node.js LTS release.
 
 ```powershell
-npm install
+npm ci
 npm run check
 npm run dev
 ```
 
-Normal quiet launch:
+Launch without the development watcher:
 
 ```powershell
 npm start
 ```
 
-Build Windows installer:
+Build the Windows installer:
 
 ```powershell
 npm run dist
 ```
 
+## Keyboard shortcuts
+
+| Action | Shortcut |
+| --- | --- |
+| Command Center | `Ctrl+K` |
+| Focus address bar | `Ctrl+L` |
+| New / close / reopen tab | `Ctrl+T` / `Ctrl+W` / `Ctrl+Shift+T` |
+| Switch tabs | `Ctrl+Tab` / `Ctrl+Shift+Tab` |
+| Find in page | `Ctrl+F` |
+| History / downloads | `Ctrl+H` / `Ctrl+J` |
+| Bookmarks / extensions | `Ctrl+Shift+B` / `Ctrl+Shift+A` |
+| Zoom page | `Ctrl++` / `Ctrl+-` / `Ctrl+0` |
+| Repair browser UI zoom | `Ctrl+Shift+0` |
+
+Tab controls are also keyboard-accessible: use the arrow keys to move between focused tabs and Delete to close one.
+
+## Security architecture
+
+- Remote pages run with `contextIsolation: true`, `nodeIntegration: false`, and sandboxing enabled.
+- The browser UI communicates with the main process through an explicit preload bridge.
+- Internal pages use the privileged `vellura://` protocol and restrictive Content Security Policies.
+- Private windows use in-memory sessions and do not save history.
+- Website permissions are surfaced through Vellura-owned prompts instead of being silently granted.
+
+Electron supports a subset of Chrome extension APIs, so unpacked extension compatibility is not identical to Chrome.
+
 ## Branding
 
-Vellura's UI references only:
+Vellura intentionally uses the existing PNG and Windows icon assets:
 
 - `assets/vellura-logo.png`
 - `assets/vellura.ico`
 
-The SVG logo is intentionally not used by this build. Replace `assets/vellura-logo.png` with your own edited Vellura PNG at any time; the browser UI will continue to use it.
-
-## Extension support
-
-Vellura can load unpacked extensions from a folder containing `manifest.json`.
-Electron supports a subset of the Chrome extension APIs, so extension compatibility is not identical to Chrome.
-
-## Feature status
-
-The menu mirrors the requested browser-style layout. The Cast menu entry is present, but Chromium screen-casting discovery is not exposed as a generic Electron API; the UI explains that state rather than pretending a cast connection exists.
-
-This project keeps remote page renderers sandboxed and does not expose Node.js APIs directly to web pages.
-
-
-## Important update note
-
-This update package intentionally does not include an `assets/` directory. Keep the user's existing `assets/vellura-logo.png` exactly as it is. The Vellura application continues to use that PNG; do not replace it with an SVG. Keep the existing `assets/vellura.ico` as well.
-
-### Fixes in 0.4.2
-
-- Vellura UI zoom is isolated from webpage zoom and locked to 100%.
-- Ctrl+= / Ctrl++ / Ctrl+- / Ctrl+0 act on the webpage only.
-- Ctrl+Shift+0 repairs the browser chrome if an older build left it zoomed.
-- Hamburger menu, profile menu, history/bookmarks/downloads/extensions panels can expand beyond the 116px toolbar without being clipped.
-- The + new-tab button stays directly after the scrollable tab strip and before the Windows controls.
-- New-tab JavaScript is separated into `src/pages/newtab.js` to avoid inline-code corruption.
-- Middle-click closes a tab.
-- Context-menu link operations are improved.
-- Chromium page zoom supports a broader range.
+Do not replace the PNG reference with an SVG. The application and verification script enforce this branding constraint.

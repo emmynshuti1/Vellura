@@ -61,13 +61,18 @@ for (const file of sourceFiles) {
 const main = fs.readFileSync(path.join(root, "main.js"), "utf8");
 const ui = fs.readFileSync(path.join(root, "src/js/vellura.js"), "utf8");
 const preload = fs.readFileSync(path.join(root, "preload.js"), "utf8");
+const chromeHTML = fs.readFileSync(path.join(root, "src/index.html"), "utf8");
+const newTabHTML = fs.readFileSync(path.join(root, "src/pages/newtab.html"), "utf8");
 
 for (const requiredText of [
   "uiOverlayOpen",
-  "setVisualZoomLevelLimits(1, 1)",
+  "setVisualZoomLevelLimits",
   "browser:repair-ui-zoom",
   "/newtab.js",
-  "input.code === \"NumpadAdd\""
+  "NumpadAdd",
+  "command-palette:open",
+  "tabs:reorder",
+  "tabs:action"
 ]) {
   if (!main.includes(requiredText)) {
     throw new Error(`Missing main.js feature: ${requiredText}`);
@@ -77,14 +82,36 @@ for (const requiredText of [
 for (const requiredText of [
   "syncOverlay",
   "setUIOverlay",
-  "repairUIZoom"
+  "repairUIZoom",
+  "openCommandPalette",
+  "openFindBar",
+  "reorderTab",
+  "tabAction"
 ]) {
   if (!ui.includes(requiredText) && !preload.includes(requiredText)) {
     throw new Error(`Missing UI feature: ${requiredText}`);
   }
 }
 
-console.log("Vellura 0.4.2 verification passed.");
-console.log("UI zoom is isolated at 100%; webpage zoom is independent.");
-console.log("Overlay panels can expand beyond the toolbar without clipping.");
-console.log("PNG-only Vellura branding is enforced in the app source.");
+if (!/setVisualZoomLevelLimits\(\s*1\s*,\s*1\s*\)/m.test(main)) {
+  throw new Error("Vellura UI visual zoom limits must stay locked at 1.");
+}
+
+for (const [file, content] of [
+  ["src/index.html", chromeHTML],
+  ["src/pages/newtab.html", newTabHTML]
+]) {
+  if (!/Content-Security-Policy/i.test(content)) {
+    throw new Error(`Missing Content Security Policy in ${file}`);
+  }
+
+  const ids = [...content.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
+  const duplicate = ids.find((id, index) => ids.indexOf(id) !== index);
+  if (duplicate) {
+    throw new Error(`Duplicate id "${duplicate}" in ${file}`);
+  }
+}
+
+console.log("Vellura 0.5.0 verification passed.");
+console.log("Browser chrome, command tools, tab actions, and new-tab assets are present.");
+console.log("Renderer CSP, isolated UI zoom, and PNG-only branding constraints passed.");
